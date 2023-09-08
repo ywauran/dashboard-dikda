@@ -1,4 +1,4 @@
-version: "2.15.1" #We specify a version for Compose. Make sure Compose is compatible with Docker
+version: "3.3" #We specify a version for Compose. Make sure Compose is compatible with Docker
 services:
   client: #Define the client service so we can run it in an isolated environment.
     stdin_open: true
