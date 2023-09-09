@@ -7,20 +7,20 @@ import DetailSchool from "./pages/DetailSchool";
 import { data } from "./utils/data";
 import { dataSMA } from "./utils/dataSMA";
 import { dataSMK } from "./utils/dataSMK";
+import Logo from "./assets/ic_logo.png";
 
 function App() {
   return (
     <>
       <div
-        className="shadow-md navbar bg-base-100"
+        className="flex items-center justify-between px-6 shadow-md navbar bg-base-100"
         style={{ position: "sticky", top: "0", zIndex: "1000" }}
       >
-        <div className="flex-1">
-          <a className="text-xl normal-case btn btn-ghost">
-            Dinas Pendidikan Daerah
-          </a>
+        <div className="flex items-center justify-center space-x-4">
+          <img src={Logo} alt="" className="w-16 h-16" />
+          <a className="hidden font-bold md:block">Dinas Pendidikan Daerah</a>
         </div>
-        <div className="flex-none">
+        <div className="">
           <ul className="px-1 space-x-4 menu menu-horizontal">
             <li>
               <NavLink to="/">SMA</NavLink>
