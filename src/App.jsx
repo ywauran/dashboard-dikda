@@ -35,7 +35,7 @@ function App() {
         </div>
       </div>
 
-      <main className="p-8">
+      <main className="">
         <Routes>
           <Route path="/" element={<SMA data={dataSMA} />} />
           <Route path="/smk" element={<SMK data={dataSMK} />} />

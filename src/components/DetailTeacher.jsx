@@ -100,23 +100,23 @@ const DetailTeacher = ({ data }) => {
             ))}
           </tbody>
         </table>
-        <div className="flex items-center justify-center mt-4">
-          <div className="join">
-            <button
-              className="join-item btn btn-outline"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              «
-            </button>
-            <button
-              className="join-item btn btn-outline"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              »
-            </button>
-          </div>
+      </div>
+      <div className="flex items-center justify-center mt-4 mb-8">
+        <div className="join">
+          <button
+            className="join-item btn btn-outline"
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            «
+          </button>
+          <button
+            className="join-item btn btn-outline"
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            »
+          </button>
         </div>
       </div>
     </>
