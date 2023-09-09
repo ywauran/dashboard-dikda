@@ -5,6 +5,8 @@ import SLB from "./components/SLB";
 import SMK from "./components/SMK";
 import DetailSchool from "./pages/DetailSchool";
 import { data } from "./utils/data";
+import { dataSMA } from "./utils/dataSMA";
+import { dataSMK } from "./utils/dataSMK";
 
 function App() {
   return (
@@ -35,8 +37,8 @@ function App() {
 
       <main className="p-8">
         <Routes>
-          <Route path="/" element={<SMA />} />
-          <Route path="/smk" element={<SMK />} />
+          <Route path="/" element={<SMA data={dataSMA} />} />
+          <Route path="/smk" element={<SMK data={dataSMK} />} />
           <Route path="/slb" element={<SLB data={data} />} />
           <Route path="/detail/:school" element={<DetailSchool />} />
         </Routes>
