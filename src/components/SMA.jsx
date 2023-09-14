@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { orgUnitCounts } from "../utils/data";
+import { orgUnitCounts } from "../utils/dataSMA";
 import PieChart from "./chart/PieChart";
 
 const ItemsPerPage = 10; // Jumlah item yang ingin ditampilkan per halaman
