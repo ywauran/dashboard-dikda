@@ -37,7 +37,7 @@ const SMK = () => {
 
   return (
     <>
-      <div className="grid grid-cols-2 place-content-center place-items-center">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 place-content-center place-items-center">
         <PieChart
           title="Guru"
           trueLogin={orgUnitCounts.totalActivationTeacher}
@@ -49,7 +49,7 @@ const SMK = () => {
           falseLogin={orgUnitCounts.totalNotActivationStudent}
         />
       </div>
-      <div className="p-4 overflow-x-auto shadow-md">
+      <div className="p-4 mt-8 overflow-x-auto shadow-md">
         <table className="table">
           <thead>
             <tr>
@@ -108,7 +108,20 @@ const SMK = () => {
               : "bg-red-100 hover:bg-red-200"
           }`}
         >
-          Previous
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+            />
+          </svg>
         </button>
 
         <button
@@ -120,7 +133,20 @@ const SMK = () => {
               : "bg-red-100 hover:bg-red-200"
           }`}
         >
-          Next
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+            />
+          </svg>
         </button>
       </div>
     </>

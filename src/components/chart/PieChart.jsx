@@ -4,12 +4,13 @@ import { Pie } from "react-chartjs-2";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const PieChart = ({ trueLogin, falseLogin, title }) => {
+  const backgroundColor = ["rgba(200, 30, 30)", "rgba(200, 30, 30, 0.5)"]; // Warna dengan opacity
   const chartData = {
     labels: ["Sudah Aktivasi", "Belum Aktivasi"],
     datasets: [
       {
         data: [trueLogin, falseLogin],
-        backgroundColor: ["#C81E1E", "#1A56DB"],
+        backgroundColor: backgroundColor,
       },
     ],
   };
