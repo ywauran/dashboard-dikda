@@ -16,7 +16,7 @@ const SMK = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `https://rich-pear-pig-wear.cyclic.app/api/smk?page=${page}&limit=${limit}`
+        `https://brainy-bee-sweatshirt.cyclic.app/api/smk?page=${page}&limit=${limit}`
       );
       setData(response.data.data);
       setTrueCountStudent(response.data.trueCountStudent);

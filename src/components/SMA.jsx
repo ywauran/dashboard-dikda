@@ -16,7 +16,7 @@ const SMA = () => {
   const getData = async () => {
     try {
       const response = await axios.get(
-        `https://rich-pear-pig-wear.cyclic.app/api/sma?page=${page}&limit=${limit}`
+        `https://brainy-bee-sweatshirt.cyclic.app/api/sma?page=${page}&limit=${limit}`
       );
       console.log(response.data.data);
       setData(response.data.data);

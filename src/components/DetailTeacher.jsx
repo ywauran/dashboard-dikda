@@ -15,7 +15,7 @@ const DetailTeacher = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://rich-pear-pig-wear.cyclic.app/api/${school}/teacher?page=${page}&limit=${limit}&center=${id}`
+        `https://brainy-bee-sweatshirt.cyclic.app/api/${school}/teacher?page=${page}&limit=${limit}&center=${id}`
       );
       console.log(response.data.data);
       setTeacherData(response.data.data);

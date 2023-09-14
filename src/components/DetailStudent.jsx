@@ -15,7 +15,7 @@ const DetailStudent = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://rich-pear-pig-wear.cyclic.app/api/${school}/student?page=${page}&limit=${limit}&center=${id}`
+        `https://brainy-bee-sweatshirt.cyclic.app/api/${school}/student?page=${page}&limit=${limit}&center=${id}`
       );
       console.log(response.data.data);
       setStudentData(response.data.data);
@@ -25,6 +25,7 @@ const DetailStudent = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, [school]);
