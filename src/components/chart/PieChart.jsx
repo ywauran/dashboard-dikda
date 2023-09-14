@@ -51,7 +51,7 @@ const PieChart = ({ trueLogin, falseLogin, title }) => {
   };
 
   return (
-    <div>
+    <div className="w-96">
       <h3 className="mb-6 text-lg font-semibold text-center">{title}</h3>
       <Pie data={chartData} options={options} />
     </div>
