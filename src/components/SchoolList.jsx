@@ -12,7 +12,7 @@ const SchoolList = () => {
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/schools?search=${search}`
+        `https://rich-pear-pig-wear.cyclic.app/schools?search=${search}`
       );
       console.log(response);
       setSchools(response.data);

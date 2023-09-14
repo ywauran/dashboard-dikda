@@ -4,9 +4,6 @@ import SMA from "./components/SMA";
 import SLB from "./components/SLB";
 import SMK from "./components/SMK";
 import DetailSchool from "./pages/DetailSchool";
-import { data } from "./utils/data";
-import { dataSMA } from "./utils/dataSMA";
-import { dataSMK } from "./utils/dataSMK";
 import Logo from "./assets/ic_logo.png";
 
 function App() {
@@ -37,10 +34,10 @@ function App() {
 
       <main className="">
         <Routes>
-          <Route path="/" element={<SMA data={dataSMA} />} />
-          <Route path="/smk" element={<SMK data={dataSMK} />} />
-          <Route path="/slb" element={<SLB data={data} />} />
-          <Route path="/detail/:school" element={<DetailSchool />} />
+          <Route path="/" element={<SMA />} />
+          <Route path="/smk" element={<SMK />} />
+          <Route path="/slb" element={<SLB />} />
+          <Route path="/detail/:school/:id" element={<DetailSchool />} />
         </Routes>
       </main>
     </>

@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChartDetail = ({ totalActivated, totalNotActivated }) => {
+const PieChartDetail = () => {
   const chartData = {
     labels: ["Sudah Aktivasi", "Belum Aktivasi"],
     datasets: [
       {
-        data: [totalActivated, totalNotActivated],
+        data: [10, 20],
         backgroundColor: ["#C81E1E", "#1A56DB"],
       },
     ],

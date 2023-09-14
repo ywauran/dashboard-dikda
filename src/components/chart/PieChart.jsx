@@ -1,18 +1,14 @@
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Pie } from "react-chartjs-2";
-import { data } from "../../utils/data";
-import { sumActivatedNotActivated } from "../../utils/count";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const PieChart = () => {
-  const [totalActivated, totalNotActivated] = sumActivatedNotActivated(data);
-
+const PieChart = ({ trueLogin, falseLogin, title }) => {
   const chartData = {
     labels: ["Sudah Aktivasi", "Belum Aktivasi"],
     datasets: [
       {
-        data: [totalActivated, totalNotActivated],
+        data: [trueLogin, falseLogin],
         backgroundColor: ["#C81E1E", "#1A56DB"],
       },
     ],
@@ -45,10 +41,21 @@ const PieChart = () => {
           },
         },
       },
+      title: {
+        display: true,
+        text: title, // Set your desired title here
+        fontSize: 16, // Adjust the font size as needed
+        padding: 20, // Adjust the padding as needed
+      },
     },
   };
 
-  return <Pie data={chartData} options={options} />;
+  return (
+    <div>
+      <h3 className="mb-6 text-lg font-semibold text-center">{title}</h3>
+      <Pie data={chartData} options={options} />
+    </div>
+  );
 };
 
 export default PieChart;

@@ -1,64 +1,44 @@
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
-const pageSize = 10;
-import PieChartDetail from "./chart/PieChartDetail";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import PieChart from "./chart/PieChart";
 
-const DetailTeacher = ({ data }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [notActivatedCount, setNotActivatedCount] = useState(0);
-  const [activatedCount, setActivatedCount] = useState(0);
+const DetailTeacher = () => {
+  const [teacherData, setTeacherData] = useState(null);
+  const [page, setPage] = useState(1);
+  const [trueCount, setTrueCount] = useState(0);
+  const [falseCount, setFalseCount] = useState(0);
+  const limit = 5;
+  const { school, id } = useParams();
 
-  const startIndex = (currentPage - 1) * pageSize;
-  const endIndex = startIndex + pageSize;
-
-  // Sort and count "Belum Selesai" and "Selesai" rows
-  const sortedData = data.slice().sort((a, b) => {
-    if (
-      a["Last Sign In [READ ONLY]"] === "Never logged in" &&
-      b["Last Sign In [READ ONLY]"] !== "Never logged in"
-    ) {
-      return -1;
-    } else if (
-      a["Last Sign In [READ ONLY]"] !== "Never logged in" &&
-      b["Last Sign In [READ ONLY]"] === "Never logged in"
-    ) {
-      return 1;
+  console.log(school);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(
+        `https://rich-pear-pig-wear.cyclic.app/api/${school}/teacher?page=${page}&limit=${limit}&center=${id}`
+      );
+      console.log(response.data.data);
+      setTeacherData(response.data.data);
+      setTrueCount(response.data.trueCount);
+      setFalseCount(response.data.falseCount);
+    } catch (error) {
+      console.log(error);
     }
-    return 0;
-  });
-
-  const currentData = sortedData.slice(startIndex, endIndex);
-  const totalPages = Math.ceil(sortedData.length / pageSize);
-
-  // Calculate counts
-  const calculateCounts = () => {
-    const notActivated = sortedData.filter(
-      (item) => item["Last Sign In [READ ONLY]"] === "Never logged in"
-    ).length;
-    const activated = sortedData.length - notActivated;
-    setNotActivatedCount(notActivated);
-    setActivatedCount(activated);
   };
-
-  // Call calculateCounts when data or currentPage changes
   useEffect(() => {
-    calculateCounts();
-  }, [data, currentPage]);
+    fetchData();
+  }, [school]); // Include 'school' in the dependency array
 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setCurrentPage(newPage);
-    }
-  };
+  if (!teacherData) {
+    return <div className="text-center">Loading...</div>; // You can enhance this with a loading indicator
+  }
+
   return (
     <>
       {/* Display counts */}
       <div className="flex justify-center">
         <div className="w-96">
-          <PieChartDetail
-            totalNotActivated={notActivatedCount}
-            totalActivated={activatedCount}
-          />
+          <PieChart trueLogin={trueCount} falseLogin={falseCount} />
         </div>
       </div>
 
@@ -76,9 +56,9 @@ const DetailTeacher = ({ data }) => {
             </tr>
           </thead>
           <tbody>
-            {currentData.map((item, index) => (
+            {teacherData.map((item, index) => (
               <tr key={index}>
-                <th>{startIndex + index + 1}</th>
+                <th>{index + 1}</th>
                 <td>{item["Cost Center"]}</td>
                 <td>{item["Org Unit Name"]}</td>
                 <td>
@@ -86,7 +66,7 @@ const DetailTeacher = ({ data }) => {
                 </td>
                 <td>{item["Email Address [Required]"]}</td>
                 <td>
-                  {item["Last Sign In [READ ONLY]"] !== "Never logged in" ? (
+                  {item["Last Sign In [READ ONLY]"] === true ? (
                     <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded ">
                       Selesai
                     </span>
@@ -101,34 +81,8 @@ const DetailTeacher = ({ data }) => {
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-center mt-4 mb-8">
-        <div className="join">
-          <button
-            className="join-item btn btn-outline"
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-          >
-            «
-          </button>
-          <button
-            className="join-item btn btn-outline"
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          >
-            »
-          </button>
-        </div>
-      </div>
     </>
   );
-};
-
-DetailTeacher.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      "Org Unit Name": PropTypes.string.isRequired,
-    })
-  ).isRequired,
 };
 
 export default DetailTeacher;
