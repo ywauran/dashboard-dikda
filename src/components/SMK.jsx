@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { orgUnitCounts } from "../utils/dataSMK";
 import PieChart from "./chart/PieChart";
+import { Link } from "react-router-dom";
 
 const ItemsPerPage = 10; // Jumlah item yang ingin ditampilkan per halaman
 
@@ -59,6 +60,7 @@ const SMK = () => {
               <th>Tidak Aktivasi</th>
               <th>Aktivasi (%)</th>
               <th>Tidak Aktivasi (%)</th>
+              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
@@ -84,6 +86,24 @@ const SMK = () => {
                   ).toFixed(2)}
                   %
                 </td>
+                <td>
+                  <Link to={`/detail/smk/${item.orgUnitName}`}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-6 h-6"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z"
+                      />
+                    </svg>
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -102,10 +122,10 @@ const SMK = () => {
         <button
           onClick={() => goToPage(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`px-3 py-2 text-red-500 ${
+          className={`px-3 py-2 text-white rounded ${
             currentPage === 1
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-red-100 hover:bg-red-200"
+              : "bg-red-500 hover:bg-red-200"
           }`}
         >
           <svg
@@ -127,10 +147,10 @@ const SMK = () => {
         <button
           onClick={() => goToPage(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`px-3 py-2 text-red-500 ${
+          className={`px-3 py-2 text-white rounded ${
             currentPage === totalPages
               ? "bg-gray-300 cursor-not-allowed"
-              : "bg-red-100 hover:bg-red-200"
+              : "bg-red-500 hover:bg-red-200"
           }`}
         >
           <svg

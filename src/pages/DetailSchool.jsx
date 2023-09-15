@@ -1,12 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import DetailTeacher from "../components/DetailTeacher";
 import DetailStudent from "../components/DetailStudent";
+import { filterAndCountNeverLoggedIn } from "../utils/data.js";
+import { filterAndCountNeverLoggedInSMK } from "../utils/dataSMK.js";
+import { filterAndCountNeverLoggedInSMA } from "../utils/dataSMA.js";
+
 const DetailSchool = () => {
   const [selectedRole, setSelectedRole] = useState("teacher"); // Default role is set to 'teacher'
-
+  const [data, setData] = useState({});
   const handleRoleChange = (role) => {
     setSelectedRole(role);
   };
+  const { school, name } = useParams();
+
+  useEffect(() => {
+    // Fetch and filter data here, assuming filterAndCountNeverLoggedIn is asynchronous
+    async function fetchData() {
+      try {
+        if (school === "slb") {
+          const result = await filterAndCountNeverLoggedIn(name);
+          setData(result);
+        } else if (school === "smk") {
+          const result = await filterAndCountNeverLoggedInSMK(name);
+          setData(result);
+        } else {
+          const result = await filterAndCountNeverLoggedInSMA(name);
+          setData(result);
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, [school]);
 
   return (
     <>
@@ -36,7 +64,21 @@ const DetailSchool = () => {
           </div>
         </div>
         <div className="mt-4">
-          {selectedRole === "teacher" ? <DetailTeacher /> : <DetailStudent />}
+          {selectedRole === "teacher" && data.dataTeacher ? (
+            <DetailTeacher
+              data={data.dataTeacher}
+              totalActivation={data.totalActivationTeacher}
+              totalNotActivation={data.totalNotActivationTeacher}
+            />
+          ) : selectedRole === "student" && data.dataStudent ? (
+            <DetailStudent
+              data={data.dataStudent}
+              totalActivation={data.totalActivationStudent}
+              totalNotActivation={data.totalNotActivationStudent}
+            />
+          ) : (
+            <span className="loading loading-dots loading-md"></span> // Add a loading indicator if data is not yet available
+          )}
         </div>
       </div>
     </>

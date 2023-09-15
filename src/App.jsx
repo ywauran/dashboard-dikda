@@ -37,7 +37,7 @@ function App() {
           <Route path="/" element={<SMA />} />
           <Route path="/smk" element={<SMK />} />
           <Route path="/slb" element={<SLB />} />
-          <Route path="/detail/:school/:id" element={<DetailSchool />} />
+          <Route path="/detail/:school/:name" element={<DetailSchool />} />
         </Routes>
       </main>
     </>

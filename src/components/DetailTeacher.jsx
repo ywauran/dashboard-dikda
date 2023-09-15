@@ -1,72 +1,62 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
-import { useParams } from "react-router-dom";
 import PieChart from "./chart/PieChart";
+import { useState } from "react";
+import PropTypes from "prop-types"; // Import PropTypes library
 
-const DetailTeacher = () => {
-  const [teacherData, setTeacherData] = useState(null);
-  const [page, setPage] = useState(1);
-  const [trueCount, setTrueCount] = useState(0);
-  const [falseCount, setFalseCount] = useState(0);
-  const limit = 5;
-  const { school, id } = useParams();
+const DetailTeacher = ({ data, totalActivation, totalNotActivation }) => {
+  const itemsPerPage = 10; // Number of items to display per page
+  const [currentPage, setCurrentPage] = useState(1);
+  const [currentNumber, setCurrentNumber] = useState(1); // State to keep track of the current number
 
-  console.log(school);
-  const fetchData = async () => {
-    try {
-      const response = await axios.get(
-        `https://brainy-bee-sweatshirt.cyclic.app/api/${school}/teacher?page=${page}&limit=${limit}&center=${id}`
-      );
-      console.log(response.data.data);
-      setTeacherData(response.data.data);
-      setTrueCount(response.data.trueCount);
-      setFalseCount(response.data.falseCount);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [school]); // Include 'school' in the dependency array
-
-  if (!teacherData) {
-    return <div className="text-center">Loading...</div>; // You can enhance this with a loading indicator
+  if (!data) {
+    return <div className="text-center">Loading...</div>;
   }
+
+  // Calculate the start and end indexes for the current page
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+
+  // Slice the data array to display only the current page's items
+  const currentPageData = data.slice(startIndex, endIndex);
+
+  // Function to handle page change
+  const handlePageChange = (newPage) => {
+    setCurrentPage(newPage);
+
+    // Update currentNumber based on the newPage
+    setCurrentNumber((newPage - 1) * itemsPerPage + 1);
+  };
 
   return (
     <>
-      {/* Display counts */}
-      <div className="flex justify-center">
-        <div className="w-96">
-          <PieChart trueLogin={trueCount} falseLogin={falseCount} />
-        </div>
+      <div className="mx-auto w-96">
+        <PieChart
+          trueLogin={totalActivation}
+          falseLogin={totalNotActivation}
+          title="Guru"
+        />
       </div>
-
       <div className="p-4 overflow-x-auto shadow-md">
         <table className="table">
-          {/* head */}
           <thead>
             <tr>
               <th></th>
-              <th>NPSN</th>
-              <th>Nama Sekolah</th>
               <th>Nama</th>
               <th>Email</th>
               <th>Aktivasi Akun</th>
             </tr>
           </thead>
           <tbody>
-            {teacherData.map((item, index) => (
+            {currentPageData.map((item, index) => (
               <tr key={index}>
-                <th>{index + 1}</th>
-                <td>{item["Cost Center"]}</td>
-                <td>{item["Org Unit Name"]}</td>
+                <th>{currentNumber + index}</th>{" "}
+                {/* Display current index number */}
                 <td>
-                  {item["First Name [Required]"]} {item["Last Name [Required]"]}
+                  {item.firstName}
+                  {item.lastName}
                 </td>
-                <td>{item["Email Address [Required]"]}</td>
+                <td>{item.emailAddress}</td>
                 <td>
-                  {item["Last Sign In [READ ONLY]"] === true ? (
+                  {item.lastSignIn !== "Never logged in" ? (
                     <span className="bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded ">
                       Selesai
                     </span>
@@ -81,8 +71,65 @@ const DetailTeacher = () => {
           </tbody>
         </table>
       </div>
+      <div className="flex justify-center my-4 space-x-4">
+        <button
+          className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M18.75 19.5l-7.5-7.5 7.5-7.5m-6 15L5.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+
+        <button
+          className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={currentPage === Math.ceil(data?.length / itemsPerPage)}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </button>
+      </div>
     </>
   );
+};
+
+// Define the prop types for your component
+DetailTeacher.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      firstName: PropTypes.string.isRequired,
+      lastName: PropTypes.string.isRequired,
+      emailAddress: PropTypes.string.isRequired,
+      lastSignIn: PropTypes.string.isRequired,
+    })
+  ),
+  totalActivation: PropTypes.number.isRequired,
+  totalNotActivation: PropTypes.number.isRequired,
 };
 
 export default DetailTeacher;

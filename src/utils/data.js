@@ -26454,5 +26454,58 @@ orgUnitCounts.data = Object.values(orgUnitCounts).filter(
 
 orgUnitCounts.data.sort((a, b) => b.countActivation - a.countActivation);
 
-// Hasilnya adalah objek orgUnitCounts yang mencakup semua properti yang Anda inginkan
-console.log(orgUnitCounts);
+export function filterAndCountNeverLoggedIn(orgUnitName) {
+  const filteredUsers = {
+    dataTeacher: usersSLB.filter(
+      (user) =>
+        user.orgunitname === orgUnitName && user.employeetitle === "teacher"
+    ),
+    dataStudent: usersSLB.filter(
+      (user) =>
+        user.orgunitname === orgUnitName && user.employeetitle === "student"
+    ),
+  };
+
+  // Urutkan berdasarkan lastsignin
+  filteredUsers.dataTeacher.sort((a, b) => {
+    if (a.lastsignin !== "Never logged in") {
+      return 1; // Taruh "Never logged in" di bagian bawah
+    } else if (b.lastsignin !== "Never logged in") {
+      return -1; // Taruh "Never logged in" di bagian bawah
+    } else {
+      return new Date(b.lastsignin) - new Date(a.lastsignin);
+    }
+  });
+
+  filteredUsers.dataStudent.sort((a, b) => {
+    if (a.lastsignin !== "Never logged in") {
+      return 1; // Taruh "Never logged in" di bagian bawah
+    } else if (b.lastsignin !== "Never logged in") {
+      return -1; // Taruh "Never logged in" di bagian bawah
+    } else {
+      return new Date(b.lastsignin) - new Date(a.lastsignin);
+    }
+  });
+
+  // Hitung jumlah "Never logged in" dalam dataTeacher dan dataStudent
+  const totalActivationTeacher = filteredUsers.dataTeacher.filter(
+    (user) => user.lastsignin !== "Never logged in"
+  ).length;
+  const totalNotActivationTeacher =
+    filteredUsers.dataTeacher.length - totalActivationTeacher;
+
+  const totalActivationStudent = filteredUsers.dataStudent.filter(
+    (user) => user.lastsignin !== "Never logged in"
+  ).length;
+  const totalNotActivationStudent =
+    filteredUsers.dataStudent.length - totalActivationStudent;
+
+  return {
+    dataTeacher: filteredUsers.dataTeacher,
+    totalActivationTeacher,
+    totalNotActivationTeacher,
+    dataStudent: filteredUsers.dataStudent,
+    totalActivationStudent,
+    totalNotActivationStudent,
+  };
+}
