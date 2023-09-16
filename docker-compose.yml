@@ -1,12 +1,13 @@
-version: "3.3" #We specify a version for Compose. Make sure Compose is compatible with Docker
+version: "3.3"
 services:
-  client: #Define the client service so we can run it in an isolated environment.
+  client:
     stdin_open: true
     build:
       context: .
-      dockerfile: Dockerfile.dev #The client service requires a docker file to be specified. For development, we’re going to use the Dockerfile.dev file.
+      dockerfile: Dockerfile.dev
     ports:
-      - "3001:3001" #Next, we map the port 3000 to Docker. The React application runs on port 3000, so we need to tell Docker which port to expose for our application.
+      - "3001:3001"
     volumes:
       - "/app/node_modules"
       - "./:/app"
+    command: sh -c "chmod -R 755 /app/node_modules/.vite && npm start"
