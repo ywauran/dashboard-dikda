@@ -26412,9 +26412,9 @@ export const orgUnitCounts = {
 
 // Iterasi melalui array usersSLB
 for (const user of usersSLB) {
-  const orgunitname = user.orgunitname;
-  const lastsignin = user.lastsignin;
-  const employeetitle = user.employeetitle;
+  const orgunitname = user.orgUnitName;
+  const lastsignin = user.lastSignIn;
+  const employeetitle = user.employeeTitle;
 
   // Mengecek apakah orgunitname sudah ada dalam objek orgUnitCounts
   if (!orgUnitCounts[orgunitname]) {
@@ -26458,44 +26458,44 @@ export function filterAndCountNeverLoggedIn(orgUnitName) {
   const filteredUsers = {
     dataTeacher: usersSLB.filter(
       (user) =>
-        user.orgunitname === orgUnitName && user.employeetitle === "teacher"
+        user.orgUnitName === orgUnitName && user.employeeTitle === "teacher"
     ),
     dataStudent: usersSLB.filter(
       (user) =>
-        user.orgunitname === orgUnitName && user.employeetitle === "student"
+        user.orgUnitName === orgUnitName && user.employeeTitle === "student"
     ),
   };
 
   // Urutkan berdasarkan lastsignin
   filteredUsers.dataTeacher.sort((a, b) => {
-    if (a.lastsignin !== "Never logged in") {
+    if (a.lastSignIn !== "Never logged in") {
       return 1; // Taruh "Never logged in" di bagian bawah
-    } else if (b.lastsignin !== "Never logged in") {
+    } else if (b.lastSignIn !== "Never logged in") {
       return -1; // Taruh "Never logged in" di bagian bawah
     } else {
-      return new Date(b.lastsignin) - new Date(a.lastsignin);
+      return new Date(b.lastSignIn) - new Date(a.lastSignIn);
     }
   });
 
   filteredUsers.dataStudent.sort((a, b) => {
-    if (a.lastsignin !== "Never logged in") {
+    if (a.lastSignIn !== "Never logged in") {
       return 1; // Taruh "Never logged in" di bagian bawah
-    } else if (b.lastsignin !== "Never logged in") {
+    } else if (b.lastSignIn !== "Never logged in") {
       return -1; // Taruh "Never logged in" di bagian bawah
     } else {
-      return new Date(b.lastsignin) - new Date(a.lastsignin);
+      return new Date(b.lastSignIn) - new Date(a.lastSignIn);
     }
   });
 
   // Hitung jumlah "Never logged in" dalam dataTeacher dan dataStudent
   const totalActivationTeacher = filteredUsers.dataTeacher.filter(
-    (user) => user.lastsignin !== "Never logged in"
+    (user) => user.lastSignIn !== "Never logged in"
   ).length;
   const totalNotActivationTeacher =
     filteredUsers.dataTeacher.length - totalActivationTeacher;
 
   const totalActivationStudent = filteredUsers.dataStudent.filter(
-    (user) => user.lastsignin !== "Never logged in"
+    (user) => user.lastSignIn !== "Never logged in"
   ).length;
   const totalNotActivationStudent =
     filteredUsers.dataStudent.length - totalActivationStudent;
